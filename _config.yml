@@ -87,7 +87,7 @@ twitter:
 facebook:
   username               :
   app_id                 :
-  publisher              :
+publisher              :
 og_image                 :
 og_description           : "Junteng Liu's academic portfolio"
 social:
@@ -135,6 +135,22 @@ exclude:
   - README
   - tmp
   - vendor
+  - AGENTS.md
+  - _config_docker.yml
+  - docker-compose.yaml
+  - markdown_generator
+  - scripts
+  - talkmap
+  - talkmap.ipynb
+  - talkmap.py
+  - talkmap_out.ipynb
+  - images/500x300.png
+  - images/bio-photo.jpg
+  - images/bio-photo-2.jpg
+  - images/editing-talk.png
+  - images/profile.png
+  - images/themes
+  - images/wiki
 keep_files:
   - .git
   - .svn

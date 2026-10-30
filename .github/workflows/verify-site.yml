@@ -1,0 +1,36 @@
+name: Verify deployed site
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the published personal pages
+        run: |
+          set -e
+          base="https://spainricardo765-spec.github.io/LJT-Homepage"
+          curl -fsSL "$base/" -o /tmp/about.html
+          curl -fsSL "$base/publications/" -o /tmp/publications.html
+          echo "--- page titles ---"
+          grep -o '<title>[^<]*</title>' /tmp/about.html /tmp/publications.html
+          echo "--- About headings ---"
+          grep -o '<h2[^>]*>[^<]*</h2>' /tmp/about.html
+          echo "--- About content checks ---"
+          for term in "Junteng Liu" "HKUST NLP Group" "Professor Junxian He" "jliugi@connect.ust.hk" "Vicent0205" "tbK9jl4AAAAJ" "junteng88716710" "Ph.D. in Computer Science" "B.Eng." "2024" "2020" "June 2024" "MINIMAX" "Tencent WXG" "Shanghai AI Lab" "Zifei Shan" "Yu Cheng" "Zhiyuan Honor Scholarship" "LLM Reasoning and Reinforcement Learning" "Hallucination in Vision-Language Models" "LLM Truthfulness and Interpretability" "SynLogic" "Perception Bottleneck" "Universal Truthfulness Hyperplane" "In-Context Sharpness" "C-Eval" "Composing Parameter-Efficient Modules" "EMNLP 2024" "ICML 2024" "NeurIPS 2023"; do
+            if grep -q "$term" /tmp/about.html; then echo "OK: $term"; else echo "MISSING: $term"; exit 1; fi
+          done
+          echo "--- Publications page checks ---"
+          for term in "SynLogic" "Perception Bottleneck" "Universal Truthfulness Hyperplane" "In-Context Sharpness" "C-Eval" "Composing Parameter-Efficient Modules"; do
+            if grep -q "$term" /tmp/publications.html; then echo "OK: $term"; else echo "MISSING: $term"; exit 1; fi
+          done
+          echo "--- No template sample content ---"
+          if grep -Eq "Paper Title Number|Your Name|Your Sidebar Name|GitHub University|blog-post" /tmp/about.html /tmp/publications.html; then exit 1; fi
+          echo "--- Stylesheets and sidebar ---"
+          grep -o 'href="[^"]*main.css"' /tmp/about.html
+          grep -o 'mailto:[^"]*' /tmp/about.html
+          echo "All checks passed."
