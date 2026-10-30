@@ -87,8 +87,7 @@ twitter:
 facebook:
   username               :
   app_id                 :
-publisher              :
-og_image                 :
+  publisher              :
 og_description           : "Junteng Liu's academic portfolio"
 social:
   type                   : Person
